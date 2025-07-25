@@ -1,30 +1,57 @@
 {
-  "name": "cdc-quang-ninh-frontend",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "axios": "^1.11.0",
-    "clsx": "^2.1.1",
-    "next": "15.4.3",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "zustand": "^5.0.6"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.4.3",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+    "name": "cdc-quang-ninh-frontend",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "build": "next build",
+        "dev": "next dev",
+        "lint": "next lint",
+        "prepare": "husky",
+        "start": "next start"
+    },
+    "lint-staged": {
+        "src/**/*.{ts,tsx}": [
+            "eslint --fix --ignore-pattern src/types",
+            "prettier --write"
+        ],
+        "*.{css,md,json}": [
+            "prettier --write"
+        ]
+    },
+    "dependencies": {
+        "@next/eslint-plugin-next": "^15.4.4",
+        "@typescript-eslint/eslint-plugin": "^8.38.0",
+        "@typescript-eslint/parser": "^8.38.0",
+        "axios": "^1.11.0",
+        "clsx": "^2.1.1",
+        "eslint-plugin-prettier": "^5.5.3",
+        "lint-staged": "^16.1.2",
+        "next": "15.4.3",
+        "react": "19.1.0",
+        "react-dom": "19.1.0",
+        "zustand": "^5.0.6"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^19.8.1",
+        "@commitlint/config-conventional": "^19.8.1",
+        "@eslint/eslintrc": "^3",
+        "@tailwindcss/postcss": "^4",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "devmoji": "^2.3.0",
+        "eslint": "^9.32.0",
+        "eslint-config-next": "^15.4.3",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-react": "^7.37.5",
+        "globals": "^16.3.0",
+        "husky": "^9.1.7",
+        "prettier": "^3.6.2",
+        "prettier-plugin-organize-imports": "^4.2.0",
+        "prettier-plugin-packagejson": "^2.5.19",
+        "prettier-plugin-style-order": "^0.2.2",
+        "prettier-plugin-tailwindcss": "^0.6.14",
+        "tailwindcss": "^4",
+        "typescript": "^5"
+    }
 }
