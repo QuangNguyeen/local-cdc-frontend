@@ -3,7 +3,7 @@ import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
 import globals from 'globals';
 import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import tsEslint from 'typescript-eslint';
 import prettierConfig from 'eslint-config-prettier';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactPlugin from 'eslint-plugin-react';
@@ -28,9 +28,9 @@ const eslintConfig = [
     }
   },
   pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  ...reactHooks.configs.recommended,
-  ...reactPlugin.configs.flat.recommended,
+  reactHooks.configs.recommended,
+  reactPlugin.configs.flat.recommended,
+  ...tsEslint.configs.recommended,
   {
     plugins: { next: nextPlugin },
     rules: {
