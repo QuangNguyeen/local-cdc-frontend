@@ -31,15 +31,12 @@
         "zustand": "^5.0.6"
     },
     "devDependencies": {
-        "@commitlint/cli": "^19.8.1",
-        "@commitlint/config-conventional": "^19.8.1",
         "@eslint/eslintrc": "^3",
         "@next/eslint-plugin-next": "^15.4.4",
         "@tailwindcss/postcss": "^4",
         "@types/node": "^20",
         "@types/react": "^19",
         "@types/react-dom": "^19",
-        "devmoji": "^2.3.0",
         "eslint": "^9.32.0",
         "eslint-config-next": "^15.4.3",
         "eslint-config-prettier": "^10.1.8",
