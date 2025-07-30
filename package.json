@@ -5,6 +5,8 @@
     "scripts": {
         "build": "next build",
         "dev": "next dev",
+        "docker:down": "docker-compose down",
+        "docker:up": "docker-compose up -d --build",
         "lint": "next lint",
         "prepare": "husky",
         "start": "next start"
