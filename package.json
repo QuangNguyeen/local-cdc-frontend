@@ -4,7 +4,8 @@
     "private": true,
     "scripts": {
         "build": "next build",
-        "dev": "next dev",
+        "codegen": "orval --config orval.config.ts",
+        "dev": "next dev -p 3000",
         "docker:down": "docker-compose down",
         "docker:up": "docker-compose up -d --build",
         "lint": "next lint",
@@ -13,7 +14,7 @@
     },
     "lint-staged": {
         "src/**/*.{ts,tsx}": [
-            "eslint --fix --ignore-pattern src/types",
+            "eslint --fix --ignore-pattern src/types --ignore-pattern src/lib/schemas --ignore-pattern src/lib/api.ts",
             "prettier --write"
         ],
         "*.{css,md,json}": [
@@ -23,6 +24,7 @@
     "dependencies": {
         "@eslint/js": "^9.32.0",
         "@radix-ui/react-slot": "^1.2.3",
+        "@tanstack/react-query": "^5.83.0",
         "@typescript-eslint/eslint-plugin": "^8.38.0",
         "@typescript-eslint/parser": "^8.38.0",
         "axios": "^1.11.0",
@@ -53,6 +55,7 @@
         "eslint-plugin-react": "^7.37.5",
         "globals": "^16.3.0",
         "husky": "^9.1.7",
+        "orval": "^7.10.0",
         "postcss": "^8.5.6",
         "prettier": "^3.6.2",
         "prettier-plugin-organize-imports": "^4.2.0",
