@@ -1,11 +1,10 @@
-"use client"
-import { Button } from "@/components/ui/button"
+'use client';
+import TodoPage from '@/components/Todo';
 
 export default function HomePage() {
     return (
-        <main className="flex min-h-screen gap-2 items-center justify-center bg-background">
-            <Button className="drak">Dark</Button>
-            <Button className="light">Light</Button>
+        <main className="bg-background flex min-h-screen items-center justify-center gap-2">
+            <TodoPage />
         </main>
-    )
+    );
 }
