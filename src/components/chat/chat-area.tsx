@@ -1,12 +1,13 @@
 'use client';
 
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Download, Send } from 'lucide-react';
+import { Bot, Download, Send } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { MobileSidebarSheet } from '../sidebar/mobile-sidebar-sheet';
+import { TypingIndicator } from '../ui/typing-indicator';
 import { MessageList } from './message-list';
-import { TypingIndicator } from './typing-indicator';
 
 interface Message {
     id: string;
@@ -31,6 +32,26 @@ const mockBotResponses = [
         content:
             'Tôi hiểu câu hỏi của bạn. Theo tài liệu hướng dẫn, có một số điểm quan trọng cần lưu ý:\n\n✓ Đảm bảo tính đầy đủ của hồ sơ\n✓ Tuân thủ đúng quy trình\n✓ Nộp đúng thời hạn quy định\n✓ Chuẩn bị các giấy tờ liên quan\n\nBạn có cần tôi giải thích thêm về bất kỳ điểm nào không?',
         sources: ['Source-gi-do.pdf'],
+    },
+    {
+        content: `# Hello World
+        This is a paragraph with **bold** and *italic* text.
+        
+        ## Lists
+        - Item 1
+        - Item 2
+        - Nested item
+        
+        ## Code
+        \`\`\`tsx
+        console.log("Hello World")
+        \`\`\`
+        
+        ## Tables
+        | Header 1 | Header 2 |
+        |----------|----------|
+        | Cell 1   | Cell 2   |
+        `,
     },
 ];
 
@@ -111,12 +132,23 @@ export function ChatArea() {
                             <Download className="text-primary h-8 w-8" />
                         </div>
                         <h2 className="text-foreground mb-2 text-xl font-medium">Thêm nguồn để bắt đầu</h2>
-                        <p className="text-muted-foreground mb-6">Tải lên tài liệu để bắt đầu trò chuyện với AI</p>
+                        {/* <p className="text-muted-foreground mb-6">Tải lên tài liệu để bắt đầu trò chuyện với AI</p> */}
                     </div>
                 ) : (
-                    <ScrollArea className="h-full p-4">
+                    <ScrollArea className="h-full p-6">
                         <MessageList messages={messages} />
-                        {isTyping && <TypingIndicator />}
+                        {isTyping && (
+                            <div className="mb-6 flex justify-start">
+                                <div className="flex max-w-[80%] gap-3">
+                                    <Avatar className="h-8 w-8 flex-shrink-0">
+                                        <AvatarFallback className="bg-indigo-500 text-white">
+                                            <Bot className="h-4 w-4" />
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    <TypingIndicator />
+                                </div>
+                            </div>
+                        )}
                         <div ref={messagesEndRef} />
                     </ScrollArea>
                 )}
@@ -130,7 +162,7 @@ export function ChatArea() {
                         onChange={(e) => setInput(e.target.value)}
                         placeholder="Bắt đầu nhập ..."
                         onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                        className="bg-background border-border px-4 py-4 pr-40 text-base"
+                        className="bg-background border-border rounded-[16px] px-5 py-6 pr-40 text-base"
                     />
                     <div className="absolute top-1/2 right-3 flex -translate-y-1/2 transform items-center space-x-2">
                         <span className="bg-muted text-muted-foreground rounded-full px-2 py-1 text-xs font-medium">

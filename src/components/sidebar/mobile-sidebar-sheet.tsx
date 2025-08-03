@@ -10,10 +10,10 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { Sheet, SheetContent, SheetHeader, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { getFileIcon } from '@/utils/getFileIcon';
 import {
     ChevronRight,
-    FileText,
     Globe,
     HelpCircle,
     LogOut,
@@ -60,54 +60,6 @@ const mockFiles: FileItem[] = [
     },
 ];
 
-const getFileIcon = (type: string) => {
-    const extension = type.toLowerCase();
-
-    if (extension === 'pdf') {
-        return (
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-red-500 text-xs font-bold text-white">
-                PDF
-            </div>
-        );
-    } else if (extension === 'docx' || extension === 'doc') {
-        return (
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-blue-500 text-xs font-bold text-white">
-                W
-            </div>
-        );
-    } else if (extension === 'xlsx' || extension === 'xls') {
-        return (
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-green-500 text-xs font-bold text-white">
-                X
-            </div>
-        );
-    } else if (extension === 'pptx' || extension === 'ppt') {
-        return (
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-orange-500 text-xs font-bold text-white">
-                P
-            </div>
-        );
-    } else if (extension === 'txt') {
-        return (
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-gray-500 text-xs font-bold text-white">
-                TXT
-            </div>
-        );
-    } else if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(extension)) {
-        return (
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-green-500 text-xs font-bold text-white">
-                <FileText className="h-4 w-4" />
-            </div>
-        );
-    } else {
-        return (
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-gray-500 text-xs font-bold text-white">
-                <FileText className="h-4 w-4" />
-            </div>
-        );
-    }
-};
-
 export function MobileSidebarSheet() {
     const [files, setFiles] = useState<FileItem[]>(mockFiles);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -140,10 +92,17 @@ export function MobileSidebarSheet() {
                     <div className="flex h-full flex-col">
                         {/* Header */}
                         <SheetHeader className="border-sidebar-border border-b p-4">
+                            <div className="hidden">
+                                <SheetTitle />
+                            </div>
                             <div className="mb-4 flex items-center justify-between">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" size="icon" className="text-sidebar-foreground h-8 w-8">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="text-sidebar-foreground h-8 w-8 rounded-[8px]"
+                                        >
                                             <Settings className="h-4 w-4" />
                                         </Button>
                                     </DropdownMenuTrigger>
@@ -204,40 +163,44 @@ export function MobileSidebarSheet() {
 
                             <Button
                                 onClick={() => setIsModalOpen(true)}
-                                className="bg-primary hover:bg-primary/90 text-primary-foreground w-full"
+                                className="bg-primary hover:bg-primary/90 text-primary-foreground w-full rounded-[8px]"
                             >
-                                <Plus className="mr-2 h-4 w-4" />
+                                <Plus className="h-4 w-4" />
                                 THÊM
                             </Button>
                         </SheetHeader>
 
                         {/* File list */}
-                        <div className="flex-1 overflow-hidden p-4">
-                            <div className="space-y-4">
-                                <div className="flex items-center space-x-2">
-                                    <Checkbox
-                                        id="select-all-mobile"
-                                        checked={selectAll}
-                                        onCheckedChange={handleSelectAll}
-                                    />
-                                    <label
-                                        htmlFor="select-all-mobile"
-                                        className="text-sidebar-foreground text-sm font-medium"
-                                    >
-                                        Chọn mọi nguồn
-                                    </label>
+                        <div className="flex-1 overflow-hidden">
+                            <div className="space-y-4 py-4">
+                                {/* Only show "Chọn mọi nguồn" after animation completes */}
+                                <div className="px-5 opacity-100 transition-opacity delay-300 duration-300">
+                                    <div className="flex items-center space-x-2">
+                                        <Checkbox
+                                            className="data-[state=unchecked]:border-muted-foreground/40 flex-shrink-0 data-[state=unchecked]:border-2"
+                                            id="select-all"
+                                            checked={selectAll}
+                                            onCheckedChange={handleSelectAll}
+                                        />
+                                        <label
+                                            htmlFor="select-all"
+                                            className="text-sidebar-foreground text-sm font-medium"
+                                        >
+                                            Chọn mọi nguồn
+                                        </label>
+                                    </div>
                                 </div>
 
-                                <ScrollArea className="h-[calc(100vh-250px)]">
-                                    <div className="space-y-2 pr-2">
+                                <ScrollArea className="h-[calc(100vh-200px)]">
+                                    <div className="space-y-1 px-2">
                                         {files.map((file) => (
                                             <div
                                                 key={file.id}
-                                                className="hover:bg-sidebar-accent flex cursor-pointer items-center space-x-3 rounded-lg p-3 transition-colors"
+                                                className="hover:bg-sidebar-accent flex cursor-pointer items-center space-x-3 rounded-[8px] p-3 transition-colors"
                                                 onClick={() => handleFileToggle(file.id)}
                                             >
                                                 {getFileIcon(file.type)}
-                                                <div className="max-w-[38%] min-w-0 flex-1">
+                                                <div className="min-w-0 flex-1">
                                                     <p
                                                         className="text-sidebar-foreground truncate text-sm font-medium"
                                                         title={file.name}

@@ -5,10 +5,11 @@ import type React from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
+import { getFileIcon } from '@/utils/getFileIcon';
 import { Trash2, Upload } from 'lucide-react';
 import { useRef, useState } from 'react';
 
-interface FileItem {
+export interface FileItem {
     id: string;
     name: string;
     type: string;
@@ -16,60 +17,12 @@ interface FileItem {
     selected: boolean;
 }
 
-interface AddSourceModalProps {
+export interface AddSourceModalProps {
     isOpen: boolean;
     onClose: () => void;
     // eslint-disable-next-line no-unused-vars
     onFilesAdded: (files: FileItem[]) => void;
 }
-
-const getFileIcon = (type: string) => {
-    const extension = type.toLowerCase();
-
-    if (extension === 'pdf') {
-        return (
-            <div className="flex h-8 w-8 items-center justify-center rounded bg-red-500 text-xs font-bold text-white">
-                PDF
-            </div>
-        );
-    } else if (extension === 'docx' || extension === 'doc') {
-        return (
-            <div className="flex h-8 w-8 items-center justify-center rounded bg-blue-500 text-xs font-bold text-white">
-                W
-            </div>
-        );
-    } else if (extension === 'xlsx' || extension === 'xls') {
-        return (
-            <div className="flex h-8 w-8 items-center justify-center rounded bg-green-500 text-xs font-bold text-white">
-                X
-            </div>
-        );
-    } else if (extension === 'pptx' || extension === 'ppt') {
-        return (
-            <div className="flex h-8 w-8 items-center justify-center rounded bg-orange-500 text-xs font-bold text-white">
-                P
-            </div>
-        );
-    } else if (extension === 'txt') {
-        return (
-            <div className="flex h-8 w-8 items-center justify-center rounded bg-gray-500 text-xs font-bold text-white">
-                TXT
-            </div>
-        );
-    } else if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(extension)) {
-        return (
-            <div className="flex h-8 w-8 items-center justify-center rounded bg-green-500 text-xs font-bold text-white">
-                IMG
-            </div>
-        );
-    } else {
-        return (
-            <div className="flex h-8 w-8 items-center justify-center rounded bg-gray-500 text-xs font-bold text-white">
-                FILE
-            </div>
-        );
-    }
-};
 
 const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
@@ -170,9 +123,7 @@ export function AddSourceModal({ isOpen, onClose, onFilesAdded }: AddSourceModal
                                     chọn tệp từ máy tính
                                 </span>
                             </p>
-                            <p className="text-xs text-gray-400">
-                                Các loại tệp hỗ trợ: PDF, Hình ảnh, .txt, Word, Excel, PowerPoint
-                            </p>
+                            <p className="text-gray-400">Các loại tệp hỗ trợ: PDF, Hình ảnh, .txt, Word, ...</p>
                         </div>
 
                         {/* Hidden file input */}
@@ -198,7 +149,7 @@ export function AddSourceModal({ isOpen, onClose, onFilesAdded }: AddSourceModal
                                     {selectedFiles.map((file) => (
                                         <div
                                             key={file.id}
-                                            className="flex items-center justify-between rounded-lg bg-gray-50 p-3"
+                                            className="flex items-center justify-between rounded-[16px] border bg-gray-50 p-4"
                                         >
                                             <div className="flex min-w-0 flex-1 items-center space-x-3">
                                                 {getFileIcon(file.type)}

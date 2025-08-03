@@ -10,10 +10,10 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { getFileIcon } from '@/utils/getFileIcon';
 import {
     ChevronLeft,
     ChevronRight,
-    FileText,
     Globe,
     HelpCircle,
     LogOut,
@@ -74,54 +74,6 @@ const mockFiles: FileItem[] = [
     },
 ];
 
-const getFileIcon = (type: string) => {
-    const extension = type.toLowerCase();
-
-    if (extension === 'pdf') {
-        return (
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-red-500 text-xs font-bold text-white">
-                PDF
-            </div>
-        );
-    } else if (extension === 'docx' || extension === 'doc') {
-        return (
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-blue-500 text-xs font-bold text-white">
-                W
-            </div>
-        );
-    } else if (extension === 'xlsx' || extension === 'xls') {
-        return (
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-green-500 text-xs font-bold text-white">
-                X
-            </div>
-        );
-    } else if (extension === 'pptx' || extension === 'ppt') {
-        return (
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-orange-500 text-xs font-bold text-white">
-                P
-            </div>
-        );
-    } else if (extension === 'txt') {
-        return (
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-gray-500 text-xs font-bold text-white">
-                TXT
-            </div>
-        );
-    } else if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(extension)) {
-        return (
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-green-500 text-xs font-bold text-white">
-                <FileText className="h-4 w-4" />
-            </div>
-        );
-    } else {
-        return (
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-gray-500 text-xs font-bold text-white">
-                <FileText className="h-4 w-4" />
-            </div>
-        );
-    }
-};
-
 interface SidebarProps {
     isOpen: boolean;
     onToggle: () => void;
@@ -151,23 +103,22 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
         return (
             <div className="bg-sidebar border-sidebar-border flex h-screen w-16 flex-col items-center space-y-3 border-r py-4 transition-all duration-300 ease-in-out">
                 <Button
+                    size="icon"
                     onClick={onToggle}
                     variant="ghost"
-                    size="icon"
-                    className="border-sidebar-border h-10 w-10 border"
+                    className="border-sidebar-border h-10 rounded-[8px] border-solid"
                 >
                     <ChevronRight className="h-4 w-4" />
                 </Button>
-
                 <Button
-                    onClick={() => setIsModalOpen(true)}
                     size="icon"
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground h-10 w-10"
+                    onClick={() => setIsModalOpen(true)}
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground h-10 w-10 rounded-[8px]"
                 >
                     <Plus className="h-4 w-4" />
                 </Button>
 
-                <div className="flex-1 space-y-2 overflow-y-auto pt-2">
+                <div className="flex-1 space-y-4 overflow-y-auto pt-2">
                     {files.slice(0, 10).map((file) => (
                         <div key={file.id} className="flex justify-center">
                             {getFileIcon(file.type)}
@@ -188,7 +139,11 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 <div className="mb-4 flex items-center justify-between">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="text-sidebar-foreground h-8 w-8">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="text-sidebar-foreground c h-8 w-8 rounded-[8px]"
+                            >
                                 <Settings className="h-4 w-4" />
                             </Button>
                         </DropdownMenuTrigger>
@@ -246,27 +201,37 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
                         </DropdownMenuContent>
                     </DropdownMenu>
 
-                    <Button onClick={onToggle} variant="ghost" size="icon" className="text-sidebar-foreground h-8 w-8">
+                    <Button
+                        onClick={onToggle}
+                        variant="ghost"
+                        size="icon"
+                        className="text-sidebar-foreground h-8 w-8 rounded-[8px]"
+                    >
                         <ChevronLeft className="h-4 w-4" />
                     </Button>
                 </div>
 
                 <Button
                     onClick={() => setIsModalOpen(true)}
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground w-full"
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground w-full rounded-[8px]"
                 >
-                    <Plus className="mr-2 h-4 w-4" />
+                    <Plus className="mr-1 h-6 w-6" />
                     THÊM
                 </Button>
             </div>
 
             {/* File list */}
-            <div className="flex-1 overflow-hidden p-4">
-                <div className="space-y-4">
+            <div className="flex-1 overflow-hidden">
+                <div className="space-y-4 py-4">
                     {/* Only show "Chọn mọi nguồn" after animation completes */}
-                    <div className="opacity-100 transition-opacity delay-300 duration-300">
+                    <div className="px-5 opacity-100 transition-opacity delay-300 duration-300">
                         <div className="flex items-center space-x-2">
-                            <Checkbox id="select-all" checked={selectAll} onCheckedChange={handleSelectAll} />
+                            <Checkbox
+                                className="data-[state=unchecked]:border-muted-foreground/40 flex-shrink-0 data-[state=unchecked]:border-2"
+                                id="select-all"
+                                checked={selectAll}
+                                onCheckedChange={handleSelectAll}
+                            />
                             <label htmlFor="select-all" className="text-sidebar-foreground text-sm font-medium">
                                 Chọn mọi nguồn
                             </label>
@@ -274,15 +239,15 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
                     </div>
 
                     <ScrollArea className="h-[calc(100vh-200px)]">
-                        <div className="space-y-2 pr-2">
+                        <div className="space-y-1 px-2">
                             {files.map((file) => (
                                 <div
                                     key={file.id}
-                                    className="hover:bg-sidebar-accent flex cursor-pointer items-center space-x-3 rounded-lg p-3 transition-colors"
+                                    className="hover:bg-sidebar-accent flex cursor-pointer items-center space-x-3 rounded-[8px] p-3 transition-colors"
                                     onClick={() => handleFileToggle(file.id)}
                                 >
                                     {getFileIcon(file.type)}
-                                    <div className="max-w-[38%] min-w-0 flex-1">
+                                    <div className="min-w-0 flex-1">
                                         <p
                                             className="text-sidebar-foreground truncate text-sm font-medium"
                                             title={file.name}
