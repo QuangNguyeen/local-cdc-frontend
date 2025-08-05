@@ -20,7 +20,7 @@ export function useChat() {
         if (!input.trim()) return;
 
         const newMessage: Message = {
-            id: Date.now().toString(),
+            id: crypto.randomUUID(),
             content: input,
             sender: 'user',
             timestamp: new Date().toLocaleString('vi-VN', {
