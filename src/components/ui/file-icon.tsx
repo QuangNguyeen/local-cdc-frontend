@@ -1,4 +1,4 @@
-import { getFileIcon } from '@/utils/formatFIleSize';
+import { getFileIcon } from '@/utils/getFileIcon';
 
 interface FileIconProps {
     type: string;

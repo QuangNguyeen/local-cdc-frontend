@@ -8,52 +8,15 @@ import { useEffect, useRef, useState } from 'react';
 import { MobileSidebarSheet } from '../sidebar/mobile-sidebar-sheet';
 import { TypingIndicator } from '../ui/typing-indicator';
 import { MessageList } from './message-list';
+import { mockBotResponses } from '@/lib/constants';
 
-interface Message {
+export interface Message {
     id: string;
     content: string;
     sender: 'user' | 'bot';
     timestamp: string;
     sources?: string[];
 }
-
-const mockBotResponses = [
-    {
-        content:
-            'Dựa trên tài liệu Source-gi-do.pdf, quy trình xử lý hồ sơ bao gồm các bước sau:\n\n1. **Tiếp nhận hồ sơ**: Kiểm tra tính đầy đủ và hợp lệ của hồ sơ\n2. **Thẩm định**: Đánh giá nội dung và tính xác thực của tài liệu\n3. **Phê duyệt**: Quyết định chấp thuận hoặc từ chối\n4. **Thông báo kết quả**: Gửi thông báo đến người nộp hồ sơ\n\nThời gian xử lý trung bình là 15-20 ngày làm việc. Bạn có muốn tôi giải thích chi tiết về bước nào không?',
-        sources: ['Source-gi-do.pdf'],
-    },
-    {
-        content:
-            'Cảm ơn bạn đã hỏi! Tôi đang xử lý thông tin từ các tài liệu đã tải lên để cung cấp câu trả lời chính xác nhất. Dựa trên các tài liệu có sẵn, tôi có thể giúp bạn tìm hiểu về:\n\n• Quy trình hành chính\n• Thủ tục pháp lý\n• Hướng dẫn thực hiện\n• Các biểu mẫu cần thiết',
-        sources: ['Source-gi-do.pdf', 'Source-gi-do.docx'],
-    },
-    {
-        content:
-            'Tôi hiểu câu hỏi của bạn. Theo tài liệu hướng dẫn, có một số điểm quan trọng cần lưu ý:\n\n✓ Đảm bảo tính đầy đủ của hồ sơ\n✓ Tuân thủ đúng quy trình\n✓ Nộp đúng thời hạn quy định\n✓ Chuẩn bị các giấy tờ liên quan\n\nBạn có cần tôi giải thích thêm về bất kỳ điểm nào không?',
-        sources: ['Source-gi-do.pdf'],
-    },
-    {
-        content: `# Hello World
-        This is a paragraph with **bold** and *italic* text.
-        
-        ## Lists
-        - Item 1
-        - Item 2
-        - Nested item
-        
-        ## Code
-        \`\`\`tsx
-        console.log("Hello World")
-        \`\`\`
-        
-        ## Tables
-        | Header 1 | Header 2 |
-        |----------|----------|
-        | Cell 1   | Cell 2   |
-        `,
-    },
-];
 
 export function ChatArea() {
     const [messages, setMessages] = useState<Message[]>([]);
@@ -73,7 +36,7 @@ export function ChatArea() {
         if (!input.trim()) return;
 
         const newMessage: Message = {
-            id: Date.now().toString(),
+            id: crypto.randomUUID(),
             content: input,
             sender: 'user',
             timestamp: new Date().toLocaleString('vi-VN', {

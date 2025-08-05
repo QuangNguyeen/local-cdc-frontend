@@ -43,7 +43,7 @@ export function AddSourceModal({ isOpen, onClose, onFilesAdded }: AddSourceModal
         const newFiles: FileItem[] = Array.from(files).map((file) => {
             const extension = file.name.split('.').pop() || 'unknown';
             return {
-                id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+                id: crypto.randomUUID(),
                 name: file.name,
                 type: extension,
                 size: formatFileSize(file.size),

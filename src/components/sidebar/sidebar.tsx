@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { mockFiles } from '@/lib/constants';
 import { getFileIcon } from '@/utils/getFileIcon';
 import {
     ChevronLeft,
@@ -27,52 +28,7 @@ import {
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useState } from 'react';
-import { AddSourceModal } from '../modals/add-source-modal';
-
-interface FileItem {
-    id: string;
-    name: string;
-    type: string;
-    size: string;
-    selected: boolean;
-}
-
-const mockFiles: FileItem[] = [
-    { id: '1', name: 'Source-gi-do.pdf', type: 'pdf', size: '15 KB', selected: true },
-    { id: '2', name: 'Source-gi-do.pdf', type: 'pdf', size: '15 KB', selected: true },
-    { id: '3', name: 'Source-gi-do.pdf', type: 'pdf', size: '15 KB', selected: true },
-    { id: '4', name: 'Source-gi-do.docx', type: 'docx', size: '12 KB', selected: true },
-    { id: '5', name: 'Source-gi-do.xlsx', type: 'xlsx', size: '8 KB', selected: true },
-    {
-        id: '6',
-        name: '524554214_753291614017335_5427185742616510464_n.jpg',
-        type: 'jpg',
-        size: '2.1 MB',
-        selected: true,
-    },
-    {
-        id: '7',
-        name: 'ベトナム社員受入準備_スンさん_20250701_final_document.xlsx',
-        type: 'xlsx',
-        size: '856 KB',
-        selected: true,
-    },
-    {
-        id: '8',
-        name: '514363653_1113602634131452_1167108765432109876_n.png',
-        type: 'png',
-        size: '1.8 MB',
-        selected: true,
-    },
-    { id: '9', name: '1360881.jpeg', type: 'jpeg', size: '445 KB', selected: true },
-    {
-        id: '10',
-        name: 'ベトナム社員受入準備_スンさん_202507_updated_version_final.docx',
-        type: 'docx',
-        size: '1.2 MB',
-        selected: true,
-    },
-];
+import { AddSourceModal, FileItem } from '../modals/add-source-modal';
 
 interface SidebarProps {
     isOpen: boolean;
