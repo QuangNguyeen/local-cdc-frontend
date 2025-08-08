@@ -41,13 +41,13 @@ export function MessageList({ messages }: MessageListProps) {
                                         : 'bg-card border-border text-card-foreground border'
                                 }`}
                             >
-                                <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                                <div className="text-[16px] leading-relaxed whitespace-pre-wrap">
                                     <MarkdownRenderer>{message.content}</MarkdownRenderer>
                                 </div>
                             </div>
 
                             {message.sender === 'bot' && (
-                                <div className="mt-2 flex items-center gap-2">
+                                <div className="mt-2 flex w-full items-center justify-between gap-2">
                                     <span className="text-muted-foreground text-xs">{message.timestamp}</span>
                                     <CopyButton content={message.content} copyMessage="Đã sao chép tin nhắn" />
                                 </div>
