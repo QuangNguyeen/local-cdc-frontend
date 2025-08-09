@@ -1,49 +1,52 @@
-name: Deploy to Production via Cloudflare Tunnel
+name: Deploy to Google Cloud Run
 
-# This workflow will not run automatically because we don't have the domain name and infrastructure set up.
-# Uncomment the following lines to enable it when ready.
-
-#on:
-#  push:
-#    branches:
-#      - main
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
+      - name: Authenticate to Google Cloud
+        uses: 'google-github-actions/auth@v2'
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
-      - name: Build and push Frontend image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: dockerhub_username/cdc-quang-ninh-frontend:latest
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
 
-      - name: Deploy to Server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /path/to/project/on/server
-            
-            echo "TUNNEL_TOKEN=${{ secrets.TUNNEL_TOKEN }}" > .env
-            
-            docker pull dockerhub_username/cdc-quang-ninh-frontend:latest
-            
-            docker pull cloudflare/cloudflared:latest
+      - name: Configure Docker
+        run: gcloud auth configure-docker --quiet
 
-            docker-compose up -d --force-recreate
-            
-            docker image prune -f
+      - name: Build and push Docker image
+        env:
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          REGION: asia-southeast2
+          REPOSITORY: cdc-frontend-docker
+          IMAGE_NAME: frontend
+        run: |
+          gcloud builds submit --tag asia-southeast2-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:$GITHUB_SHA .
+
+      - name: Deploy to Cloud Run
+        env:
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          REGION: asia-southeast2
+          REPOSITORY: cdc-frontend-docker
+          IMAGE_NAME: frontend
+          SERVICE_NAME: cdc-frontend-image
+        run: |
+          gcloud run deploy $SERVICE_NAME \
+            --image asia-southeast2-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:$GITHUB_SHA \
+            --region $REGION \
+            --platform managed \
+            --allow-unauthenticated \
+            --port 3000
