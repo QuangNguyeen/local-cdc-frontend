@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { getFileIcon } from '@/utils/getFileIcon';
-import { Trash2, Upload } from 'lucide-react';
+import Image from 'next/image';
 import { useRef, useState } from 'react';
 
 export interface FileItem {
@@ -113,8 +113,14 @@ export function AddSourceModal({ isOpen, onClose, onFilesAdded }: AddSourceModal
                             onDrop={handleDrop}
                             onClick={handleBrowseFiles}
                         >
-                            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-indigo-100">
-                                <Upload className="h-10 w-10 text-indigo-600" />
+                            <div className="mx-auto mb-6 flex h-[72px] w-[72px] items-center justify-center rounded-full bg-[#EDEBFF]">
+                                <Image
+                                    src="/svg/dowload.svg"
+                                    width={40}
+                                    height={40}
+                                    alt="Send"
+                                    className="h-[40px] w-[40px]"
+                                />
                             </div>
                             <h3 className="mb-2 text-lg font-medium text-gray-900">Kéo thả tài liệu vào đây</h3>
                             <p className="mb-4 text-base text-gray-500">
@@ -145,11 +151,11 @@ export function AddSourceModal({ isOpen, onClose, onFilesAdded }: AddSourceModal
                                 <h3 className="mb-3 text-sm font-medium text-gray-900">
                                     Tài liệu đã chọn ({selectedFiles.length}):
                                 </h3>
-                                <div className="max-h-[240px] space-y-3 overflow-y-auto pr-2">
+                                <div className="max-h-[240px] space-y-[16px] overflow-y-auto pr-2">
                                     {selectedFiles.map((file) => (
                                         <div
                                             key={file.id}
-                                            className="flex items-center justify-between rounded-[16px] border bg-gray-50 p-4"
+                                            className="flex items-center justify-between rounded-[16px] border px-[16px] py-[12px] hover:bg-gray-50"
                                         >
                                             <div className="flex min-w-0 flex-1 items-center space-x-3">
                                                 {getFileIcon(file.type)}
@@ -169,7 +175,13 @@ export function AddSourceModal({ isOpen, onClose, onFilesAdded }: AddSourceModal
                                                 onClick={() => handleRemoveFile(file.id)}
                                                 className="h-8 w-8 flex-shrink-0 text-red-500 hover:bg-red-50 hover:text-red-700"
                                             >
-                                                <Trash2 className="h-4 w-4" />
+                                                <Image
+                                                    src="/svg/trash.svg"
+                                                    alt="Remove file"
+                                                    width={24}
+                                                    height={24}
+                                                    className="h-6 w-6"
+                                                />
                                             </Button>
                                         </div>
                                     ))}

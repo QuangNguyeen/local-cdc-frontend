@@ -12,21 +12,9 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { getFileIcon } from '@/utils/getFileIcon';
-import {
-    ChevronRight,
-    Globe,
-    HelpCircle,
-    LogOut,
-    Menu,
-    Monitor,
-    Moon,
-    Palette,
-    Plus,
-    Settings,
-    Sun,
-    User,
-} from 'lucide-react';
+import { ChevronRight, Menu, Plus } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import Image from 'next/image';
 import { useState } from 'react';
 import { AddSourceModal } from '../modals/add-source-modal';
 
@@ -98,74 +86,78 @@ export function MobileSidebarSheet() {
                             <div className="mb-4 flex items-center justify-between">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="text-sidebar-foreground h-8 w-8 rounded-[8px]"
-                                        >
-                                            <Settings className="h-4 w-4" />
-                                        </Button>
+                                        <Image
+                                            onClick={() => setIsModalOpen(true)}
+                                            src="/svg/setting.svg"
+                                            className="h-[34px] w-[34px] hover:cursor-pointer"
+                                            width={34}
+                                            height={34}
+                                            alt="Open"
+                                        />
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="start" className="w-48">
-                                        <DropdownMenuItem>
-                                            <User className="mr-2 h-4 w-4" />
-                                            Hồ sơ
-                                        </DropdownMenuItem>
+                                    <DropdownMenuContent align="start" className="w-48 rounded-[8px]">
+                                        <DropdownMenuItem>Hồ sơ</DropdownMenuItem>
                                         <Separator />
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
-                                                <DropdownMenuItem>
-                                                    <Palette className="mr-2 h-4 w-4" />
+                                                <DropdownMenuItem className="text-base">
                                                     Giao diện
                                                     <ChevronRight className="ml-auto h-4 w-4" />
                                                 </DropdownMenuItem>
                                             </DropdownMenuTrigger>
-                                            <DropdownMenuContent side="right" align="start" className="w-32">
-                                                <DropdownMenuItem onClick={() => setTheme('light')}>
-                                                    <Sun className="mr-2 h-4 w-4" />
+                                            <DropdownMenuContent
+                                                side="right"
+                                                align="start"
+                                                className="w-32 rounded-[8px]"
+                                            >
+                                                <DropdownMenuItem
+                                                    className="text-base"
+                                                    onClick={() => setTheme('light')}
+                                                >
                                                     Sáng
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem onClick={() => setTheme('dark')}>
-                                                    <Moon className="mr-2 h-4 w-4" />
+                                                <DropdownMenuItem
+                                                    className="text-base"
+                                                    onClick={() => setTheme('dark')}
+                                                >
                                                     Tối
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem onClick={() => setTheme('system')}>
-                                                    <Monitor className="mr-2 h-4 w-4" />
+                                                <DropdownMenuItem
+                                                    className="text-base"
+                                                    onClick={() => setTheme('system')}
+                                                >
                                                     Hệ thống
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
-                                                <DropdownMenuItem>
-                                                    <Globe className="mr-2 h-4 w-4" />
+                                                <DropdownMenuItem className="text-base">
                                                     Ngôn ngữ
                                                     <ChevronRight className="ml-auto h-4 w-4" />
                                                 </DropdownMenuItem>
                                             </DropdownMenuTrigger>
-                                            <DropdownMenuContent side="right" align="start" className="w-32">
-                                                <DropdownMenuItem>English</DropdownMenuItem>
-                                                <DropdownMenuItem>Tiếng Việt</DropdownMenuItem>
+                                            <DropdownMenuContent
+                                                side="right"
+                                                align="start"
+                                                className="w-32 rounded-[8px]"
+                                            >
+                                                <DropdownMenuItem className="text-base">English</DropdownMenuItem>
+                                                <DropdownMenuItem className="text-base">Tiếng Việt</DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
-                                        <DropdownMenuItem>
-                                            <HelpCircle className="mr-2 h-4 w-4" />
-                                            Trợ giúp
-                                        </DropdownMenuItem>
                                         <Separator />
-                                        <DropdownMenuItem>
-                                            <LogOut className="mr-2 h-4 w-4" />
-                                            Đăng xuất
-                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className="text-base">Trợ giúp</DropdownMenuItem>
+                                        <DropdownMenuItem className="text-base">Đăng xuất</DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </div>
 
                             <Button
                                 onClick={() => setIsModalOpen(true)}
-                                className="bg-primary hover:bg-primary/90 text-primary-foreground w-full rounded-[8px]"
+                                className="bg-primary hover:bg-primary/90 text-primary-foreground w-full rounded-[8px] text-[16px]"
                             >
-                                <Plus className="h-4 w-4" />
+                                <Plus width={30} height={30} className="mr-1 h-[30px] w-[30px]" />
                                 THÊM
                             </Button>
                         </SheetHeader>
@@ -202,7 +194,7 @@ export function MobileSidebarSheet() {
                                                 {getFileIcon(file.type)}
                                                 <div className="min-w-0 flex-1">
                                                     <p
-                                                        className="text-sidebar-foreground truncate text-sm font-medium"
+                                                        className="text-sidebar-foreground truncate text-[16px] font-medium"
                                                         title={file.name}
                                                     >
                                                         {file.name}
