@@ -5,23 +5,5 @@ services:
     build: .
     container_name: cdc_quang_ninh_frontend
     restart: unless-stopped
-
-# Because we don't have a domain yet, we will use Cloudflare's tunnel service to expose the frontend to the internet
-# in a random domain
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: cdc_quang_ninh_tunnel
-    restart: unless-stopped
-    command: tunnel --url http://frontend:3000
-    depends_on:
-      - frontend
-#  Uncomment the following lines if we already have a domain and tunnel token
-#  cloudflared:
-#    image: cloudflare/cloudflared:latest
-#    container_name: cdc_quang_ninh_tunnel
-#    restart: unless-stopped
-#    command: tunnel --no-autoupdate run
-#    environment:
-#      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
-#    depends_on:
-#      - frontend
+    ports:
+      - "3000:3000"
