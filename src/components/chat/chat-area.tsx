@@ -3,13 +3,14 @@
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { mockBotResponses } from '@/lib/constants';
 import { Bot } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { MobileSidebarSheet } from '../sidebar/mobile-sidebar-sheet';
 import { TypingIndicator } from '../ui/typing-indicator';
 import { MessageList } from './message-list';
+import { useQuestionStore } from '@/store/questionStore';
+import { NOTEBOOK_CONFIG } from '@/lib/constants';
 
 export interface Message {
     id: string;
@@ -20,9 +21,8 @@ export interface Message {
 }
 
 export function ChatArea() {
-    const [messages, setMessages] = useState<Message[]>([]);
+    const { messages, isLoading, askQuestion } = useQuestionStore(); // lấy state từ store
     const [input, setInput] = useState('');
-    const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -31,47 +31,16 @@ export function ChatArea() {
 
     useEffect(() => {
         scrollToBottom();
-    }, [messages, isTyping]);
+    }, [messages, isLoading]);
 
     const handleSend = () => {
         if (!input.trim()) return;
-
-        const newMessage: Message = {
-            id: crypto.randomUUID(),
-            content: input,
-            sender: 'user',
-            timestamp: new Date().toLocaleString('vi-VN', {
-                hour: '2-digit',
-                minute: '2-digit',
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-            }),
-        };
-
-        setMessages((prev) => [...prev, newMessage]);
+        askQuestion(
+            input,
+            NOTEBOOK_CONFIG.defaultNotebookId, // notebookId
+            [NOTEBOOK_CONFIG.defaultDocumentIds] // documentIds
+        );
         setInput('');
-        setIsTyping(true);
-
-        // Simulate bot response with random response from mock data
-        setTimeout(() => {
-            const randomResponse = mockBotResponses[Math.floor(Math.random() * mockBotResponses.length)];
-            const botResponse: Message = {
-                id: (Date.now() + 1).toString(),
-                content: randomResponse.content,
-                sender: 'bot',
-                timestamp: new Date().toLocaleString('vi-VN', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                }),
-                sources: randomResponse.sources,
-            };
-            setMessages((prev) => [...prev, botResponse]);
-            setIsTyping(false);
-        }, 2000);
     };
 
     return (
@@ -102,12 +71,11 @@ export function ChatArea() {
                             />
                         </div>
                         <h2 className="mb-2 text-xl font-medium text-[#666666]">Thêm nguồn để bắt đầu</h2>
-                        {/* <p className="text-muted-foreground mb-6">Tải lên tài liệu để bắt đầu trò chuyện với AI</p> */}
                     </div>
                 ) : (
                     <ScrollArea className="h-full p-6">
                         <MessageList messages={messages} />
-                        {isTyping && (
+                        {isLoading && (
                             <div className="mb-6 flex justify-start">
                                 <div className="flex max-w-[80%] gap-3">
                                     <Avatar className="h-8 w-8 flex-shrink-0">

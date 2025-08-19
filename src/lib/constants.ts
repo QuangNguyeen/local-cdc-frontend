@@ -16,6 +16,11 @@ export const mockBotResponses = [
     },
 ];
 
+export const NOTEBOOK_CONFIG = {
+    defaultNotebookId: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+    defaultDocumentIds: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+} as const;
+
 export interface FileItem {
     id: string;
     name: string;
